@@ -42,7 +42,7 @@ export default function Login() {
   if (state.error && state.error.graphQLErrors && state.error.graphQLErrors[0]
     && state.error.graphQLErrors[0].message === 'Invalid password')
   {
-    passwordError = false;
+    passwordError = true;
   }
 
 
