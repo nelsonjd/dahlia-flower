@@ -1,15 +1,19 @@
 import './App.css';
 import '@shopify/polaris/dist/styles.css';
 import AuthorizationRouter from './AuthorizationRouter';
-import Route from './Route';
-import Login from './Login';
-import NonDefaultLink from './NonDefaultLink';
+import { GraphQLClient, ClientContext } from 'graphql-hooks';
+
+const client = new GraphQLClient({
+  url: 'http://localhost:8080/graphql'
+});
 
 function App() {
 
   return (
-    <AuthorizationRouter>
-    </AuthorizationRouter>
+    <ClientContext.Provider value={client}>
+      <AuthorizationRouter>
+      </AuthorizationRouter>
+    </ClientContext.Provider>
   );
 }
 

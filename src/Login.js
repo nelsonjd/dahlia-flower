@@ -18,16 +18,35 @@ import {
   Heading,
   ChoiceList,
   TextContainer} from '@shopify/polaris';
-import { useState, useCallback } from 'react'; 
+import { useState, useCallback } from 'react';
+import { useMutation } from 'graphql-hooks';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const LOGIN_MUTATION = `mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+        refreshToken
+        user {
+            id
+            username
+        }
+    }
+  }`
+
+  const [runLogin, state] = useMutation(LOGIN_MUTATION);
+  console.log(state);
+
 
   const handleSubmit = (event) =>
   {
-    console.log(event);
+    runLogin({
+      variables: {
+        username: username,
+        password: password
+      }
+    });
   };
 
   const handleUsernameChange = (val) =>
@@ -39,7 +58,6 @@ export default function Login() {
   {
     setPassword(val);
   }
-
 
   return (
     <Page title="Dahlia">
