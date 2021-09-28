@@ -12,7 +12,7 @@ import {
   Link,
   Form,
   FormLayout,
-  AccountConnection,
+  InlineError,
   TextField,
   FooterHelp,
   Heading,
@@ -36,7 +36,14 @@ export default function Login() {
   }`
 
   const [runLogin, state] = useMutation(LOGIN_MUTATION);
-  console.log(state);
+
+  let passwordError = false;
+
+  if (state.error && state.error.graphQLErrors && state.error.graphQLErrors[0]
+    && state.error.graphQLErrors[0].message === 'Invalid password')
+  {
+    passwordError = true;
+  }
 
 
   const handleSubmit = (event) =>
@@ -73,11 +80,16 @@ export default function Login() {
                   value={username}
                   onChange={handleUsernameChange}
                 />
+
                 <TextField
+                  id="passwordInput"
                   label="Password"
                   value={password}
                   onChange={handlePasswordChange}
                 />
+                {passwordError && 
+                  <InlineError message="Incorrect Password" fieldID="passwordInput" />
+                }
                 <Button submit>Sign In</Button>
               </FormLayout>
             </Form>
